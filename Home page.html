@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gausej - Professional Video Sharing Platform</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    
+    body {
+      color: #333;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background-color: #fff;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+    }
+    
+    .logo img {
+      height: 40px;
+      margin-right: 10px;
+    }
+    
+    .logo h1 {
+      font-size: 24px;
+      font-weight: 600;
+      color: #333;
+    }
+    
+    .nav-links {
+      display: flex;
+      list-style: none;
+    }
+    
+    .nav-links li {
+      margin-left: 30px;
+    }
+    
+    .nav-links a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+      transition: color 0.3s;
+    }
+    
+    .nav-links a:hover {
+      color: #168b59;
+    }
+    
+    .auth-buttons {
+      display: flex;
+      align-items: center;
+    }
+    
+    .btn {
+      padding: 10px 20px;
+      border-radius: 5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-login {
+      color: #333;
+      margin-right: 15px;
+      background: none;
+      border: none;
+    }
+    
+    .btn-login:hover {
+      color: #168b59;
+    }
+    
+    .btn-signup {
+      background-color: #168b59;
+      color: white;
+      border: none;
+    }
+    
+    .btn-signup:hover {
+      background-color: #0d6e44;
+    }
+    
+    .hero {
+      background-color: #f7f9fc;
+      padding: 80px 0;
+      text-align: center;
+    }
+    
+    .hero h2 {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #222;
+    }
+    
+    .hero p {
+      font-size: 18px;
+      color: #666;
+      max-width: 600px;
+      margin: 0 auto 30px;
+    }
+    
+    .search-container {
+      max-width: 600px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    .search-box {
+      width: 100%;
+      padding: 15px 20px;
+      border-radius: 30px;
+      border: 1px solid #ddd;
+      font-size: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .search-icon {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+    }
+    
+    .categories {
+      padding: 30px 0;
+      text-align: center;
+    }
+    
+    .category-filters {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+    
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 20px;
+      background-color: #f0f0f0;
+      border: none;
+      color: #555;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .filter-btn.active {
+      background-color: #168b59;
+      color: white;
+    }
+    
+    .filter-btn:hover:not(.active) {
+      background-color: #e0e0e0;
+    }
+    
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 25px;
+    }
+    
+    .video-card {
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
+    }
+    
+    .video-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .video-thumbnail {
+      position: relative;
+      width: 100%;
+      height: 0;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      background-color: #f0f0f0;
+      overflow: hidden;
+    }
+    
+    .video-thumbnail img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .video-tag {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      color: white;
+      background-color: rgba(0,0,0,0.7);
+    }
+    
+    .video-info {
+      padding: 15px;
+    }
+    
+    .video-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #222;
+    }
+    
+    .video-description {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .video-meta {
+      display: flex;
+      align-items: center;
+    }
+    
+    .creator {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
+    
+    .creator-avatar {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: 10px;
+      background-color: #ddd;
+      overflow: hidden;
+    }
+    
+    .creator-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .creator-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #555;
+    }
+    
+    .video-stats {
+      display: flex;
+      font-size: 12px;
+      color: #888;
+    }
+    
+    .stat {
+      display: flex;
+      align-items: center;
+      margin-left: 15px;
+    }
+    
+    .stat i {
+      margin-right: 5px;
+    }
+    
+    .features {
+      padding: 80px 0;
+      background-color: #fff;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: 32px;
+      margin-bottom: 50px;
+      color: #222;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+    
+    .feature-card {
+      text-align: center;
+      padding: 30px;
+      border-radius: 8px;
+      background-color: #f7f9fc;
+      transition: transform 0.3s;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .feature-icon {
+      font-size: 40px;
+      color: #168b59;
+      margin-bottom: 20px;
+    }
+    
+    .feature-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 15px;
+      color: #222;
+    }
+    
+    .feature-description {
+      font-size: 16px;
+      color: #666;
+    }
+    
+    .cta {
+      background-color: #168b59;
+      color: white;
+      text-align: center;
+      padding: 80px 0;
+    }
+    
+    .cta h2 {
+      font-size: 36px;
+      margin-bottom: 20px;
+    }
+    
+    .cta p {
+      font-size: 18px;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      opacity: 0.9;
+    }
+    
+    .btn-cta {
+      background-color: white;
+      color: #168b59;
+      padding: 12px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .btn-cta:hover {
+      background-color: #f0f0f0;
+    }
+    
+    footer {
+      background-color: #333;
+      color: white;
+      padding: 50px 0 20px;
+    }
+    
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 30px;
+    }
+    
+    .footer-col h3 {
+      font-size: 18px;
+      margin-bottom: 20px;
+      color: #fff;
+    }
+    
+    .footer-links {
+      list-style: none;
+    }
+    
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+    
+    .footer-links a {
+      color: #ccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .footer-links a:hover {
+      color: white;
+    }
+    
+    .copyright {
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #444;
+      color: #888;
+      font-size: 14px;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+      
+      .hero h2 {
+        font-size: 32px;
+      }
+      
+      .video-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container nav-container">
+      <div class="logo">
+        <img src="Logo Gausej.png" alt="Gausej Logo">
+        <h1>Gausej</h1>
+      </div>
+      
+      <ul class="nav-links">
+        <li><a href="Home page.html">Home</a></li>
+        <li><a href="#">Explore</a></li>
+        <li><a href="upload page.html">Upload</a></li>
+        <li><a href="profile page.html">Profile</a></li>
+      </ul>
+      
+      <div class="auth-buttons">
+       
+        <button class="btn btn-signup">Sign up/Login</button>
+      </div>
+    </div>
+  </header>
+  
+  <section class="hero">
+    <div class="container">
+      <h2>Share Your Professional Vision</h2>
+      <p>Discover and share business ideas, startup pitches, product demos, and innovative solutions in one place.</p>
+      
+      <div class="search-container">
+        <input type="text" class="search-box" placeholder="Search for videos, creators, or topics...">
+        <span class="search-icon">🔍</span>
+      </div>
+    </div>
+  </section>
+  
+  <section class="categories">
+    <div class="container">
+      <div class="category-filters">
+        <button class="filter-btn active">All</button>
+        <button class="filter-btn">Startup Pitch</button>
+        <button class="filter-btn">Product Demo</button>
+        <button class="filter-btn">Business Idea</button>
+        <button class="filter-btn">Promotional</button>
+        <button class="filter-btn">Podcast</button>
+        <button class="filter-btn">Other</button>
+      </div>
+      
+      <div class="video-grid">
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <img src="/api/placeholder/300/180" alt="Revolutionary AI Solution">
+            <span class="video-tag">Product Demo</span>
+          </div>
+          <div class="video-info">
+            <h3 class="video-title">Revolutionary AI Solution for Small Businesses</h3>
+            <p class="video-description">Our AI platform helps small businesses automate customer service with minimal setup.</p>
+            <div class="video-meta">
+              <div class="creator">
+                <div class="creator-avatar">
+                  <img src="/api/placeholder/30/30" alt="Emma">
+                </div>
+                <span class="creator-name">Emma</span>
+              </div>
+              <div class="video-stats">
+                <span class="stat"><i>👁️</i> 7,340</span>
+                <span class="stat"><i>👍</i> 347</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <img src="/api/placeholder/300/180" alt="GreenPack Packaging">
+            <span class="video-tag">Startup Pitch</span>
+          </div>
+          <div class="video-info">
+            <h3 class="video-title">GreenPack: Sustainable Packaging Pitch</h3>
+            <p class="video-description">Our biodegradable packaging solution can revolutionize e-commerce. Seeking Series A funding.</p>
+            <div class="video-meta">
+              <div class="creator">
+                <div class="creator-avatar">
+                  <img src="/api/placeholder/30/30" alt="Sophia">
+                </div>
+                <span class="creator-name">Sophia</span>
+              </div>
+              <div class="video-stats">
+                <span class="stat"><i>👁️</i> 5,870</span>
+                <span class="stat"><i>👍</i> 419</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <img src="/api/placeholder/300/180" alt="FinTech Revolution">
+            <span class="video-tag">Promotional</span>
+          </div>
+          <div class="video-info">
+            <h3 class="video-title">FinTech Revolution: Blockchain Payment System</h3>
+            <p class="video-description">Our blockchain payment system reduces transaction fees by 80%. See how it works in practice.</p>
+            <div class="video-meta">
+              <div class="creator">
+                <div class="creator-avatar">
+                  <img src="/api/placeholder/30/30" alt="Olivia Kim">
+                </div>
+                <span class="creator-name">Olivia Kim</span>
+              </div>
+              <div class="video-stats">
+                <span class="stat"><i>👁️</i> 7,620</span>
+                <span class="stat"><i>👍</i> 843</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="video-card">
+          <div class="video-thumbnail">
+            <img src="/api/placeholder/300/180" alt="TechCorp Innovation Lab">
+            <span class="video-tag">Business Idea</span>
+          </div>
+          <div class="video-info">
+            <h3 class="video-title">TechCorp Innovation Lab: Future Technologies</h3>
+            <p class="video-description">A look inside our innovation lab and the technologies we're developing for the next generation.</p>
+            <div class="video-meta">
+              <div class="creator">
+                <div class="creator-avatar">
+                  <img src="/api/placeholder/30/30" alt="James">
+                </div>
+                <span class="creator-name">James</span>
+              </div>
+              <div class="video-stats">
+                <span class="stat"><i>👁️</i> 4,130</span>
+                <span class="stat"><i>👍</i> 265</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">Why Choose Gausej?</h2>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3 class="feature-title">Professional Audience</h3>
+          <p class="feature-description">Connect with entrepreneurs, investors, and business professionals who can help turn your ideas into reality.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3 class="feature-title">Detailed Analytics</h3>
+          <p class="feature-description">Track engagement, viewer demographics, and feedback to refine your business presentations.</p>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3 class="feature-title">Privacy Controls</h3>
+          <p class="feature-description">Choose who can view your content - from public sharing to private invitations only.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <section class="cta">
+    <div class="container">
+      <h2>Ready to Share Your Vision?</h2>
+      <p>Join thousands of entrepreneurs and business professionals showcasing their ideas on Gausej.</p>
+      <button class="btn btn-cta">Get Started for Free</button>
+    </div>
+  </section>
+  
+  <footer>
+    <div class="container">
+      <div class="footer-container">
+        <div class="footer-col">
+          <h3>Company</h3>
+          <ul class="footer-links">
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a href="#">Blog</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h3>Product</h3>
+          <ul class="footer-links">
+            <li><a href="#">Features</a></li>
+            <li><a href="#">Pricing</a></li>
+            <li><a href="#">Enterprise</a></li>
+            <li><a href="#">Security</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h3>Resources</h3>
+          <ul class="footer-links">
+            <li><a href="#">Documentation</a></li>
+            <li><a href="#">Guides</a></li>
+            <li><a href="#">API</a></li>
+            <li><a href="#">Community</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-col">
+          <h3>Support</h3>
+          <ul class="footer-links">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Contact Us</a></li>
+            <li><a href="#">Status</a></li>
+            <li><a href="#">FAQ</a></li>
+          </ul>
+        </div>
+      </div>
+      
+      <div class="copyright">
+        <p>&copy; 2025 Gausej. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

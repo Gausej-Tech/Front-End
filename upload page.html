@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video - Gausej</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex">
+                    <div class="flex-shrink-0 flex items-center">
+                        <img class="h-8 w-auto" src="Logo Gausej.png" alt="Gausej Logo">
+                        <span class="ml-2 text-xl font-bold text-gray-800">Gausej</span>
+                    </div>
+                    <div class="ml-6 flex space-x-8">
+                        <a href="Home page.html" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Home
+                        </a>
+                        <a href="#" class="border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">
+                            Explore
+                        </a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <a href="upload.html" class="mr-4 text-indigo-600 hover:text-indigo-800">
+                        <i class="fas fa-upload text-lg"></i>
+                    </a>
+                    <div class="flex-shrink-0 relative">
+                        <button type="button" class="bg-white rounded-full flex focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <img class="h-8 w-8 rounded-full" src="https://via.placeholder.com/100" alt="User profile">
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="bg-white shadow rounded-lg overflow-hidden">
+            <!-- Header -->
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h1 class="text-xl font-semibold text-gray-900">Upload Video</h1>
+                <p class="mt-1 text-sm text-gray-500">Share your pitch, demo, or idea with the Gausej community</p>
+            </div>
+
+            <!-- Upload Form -->
+            <div class="px-6 py-4">
+                <form id="uploadForm">
+                    <!-- File Upload Area -->
+                    <div class="mt-1 mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Video File</label>
+                        <div class="flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 border-dashed rounded-md bg-gray-50 relative">
+                            <div class="space-y-1 text-center" id="uploadPlaceholder">
+                                <i class="fas fa-cloud-upload-alt text-gray-400 text-5xl mb-3"></i>
+                                <div class="flex text-sm text-gray-600 justify-center">
+                                    <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
+                                        <span>Upload a file</span>
+                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" accept="video/*">
+                                    </label>
+                                    <p class="pl-1">or drag and drop</p>
+                                </div>
+                                <p class="text-xs text-gray-500">MP4, MOV, AVI up to 2GB</p>
+                            </div>
+                            <div id="filePreview" class="hidden w-full text-center">
+                                <div class="py-4">
+                                    <i class="fas fa-video text-indigo-500 text-2xl mb-2"></i>
+                                    <p id="fileName" class="text-sm font-medium text-gray-900 mb-1"></p>
+                                    <p id="fileSize" class="text-xs text-gray-500"></p>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-2.5 mt-2 mb-3">
+                                    <div id="uploadProgress" class="bg-indigo-600 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                                <button type="button" id="removeFile" class="text-xs text-red-600 hover:text-red-800">
+                                    Remove file
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Thumbnail Upload -->
+                    <div class="mb-6">
+                        <label class="block text-sm font-medium text-gray-700 mb-2">Custom Thumbnail (Optional)</label>
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 h-24 w-40 bg-gray-100 rounded-md border border-gray-300 flex items-center justify-center">
+                                <div id="thumbnailPlaceholder">
+                                    <i class="fas fa-image text-gray-400 text-xl"></i>
+                                </div>
+                                <img id="thumbnailPreview" class="h-24 w-40 object-cover rounded-md hidden" alt="Thumbnail preview">
+                            </div>
+                            <div class="flex-1">
+                                <label for="thumbnail-upload" class="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer">
+                                    <i class="fas fa-upload mr-2"></i> Upload thumbnail
+                                    <input id="thumbnail-upload" name="thumbnail-upload" type="file" class="sr-only" accept="image/*">
+                                </label>
+                                <p class="mt-1 text-xs text-gray-500">
+                                    Recommended size: 1280x720 pixels (16:9 aspect ratio)
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Video Details -->
+                    <div class="mb-6">
+                        <label for="title" class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+                        <input type="text" name="title" id="title" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Enter a descriptive title for your video" maxlength="100">
+                        <div class="mt-1 text-xs text-gray-500 flex justify-end">
+                            <span id="titleCounter">0</span>/100
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                        <textarea id="description" name="description" rows="4" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Describe your video to help viewers find it"></textarea>
+                        <div class="mt-1 text-xs text-gray-500 flex justify-end">
+                            <span id="descCounter">0</span>/500
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <label for="category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                        <select id="category" name="category" class="shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 rounded-md">
+                            <option value="" disabled selected>Select a category</option>
+                            <option value="startup-pitch">Startup Pitch</option>
+                            <option value="product-demo">Product Demo</option>
+                            <option value="business-idea">Business Idea</option>
+                            <option value="promotional">Promotional</option>
+                            <option value="podcast">Podcast</option>
+                            <option value="tutorial">Tutorial</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="mb-6">
+                        <label for="tags" class="block text-sm font-medium text-gray-700 mb-1">Tags</label>
+                        <div class="flex flex-wrap items-center border border-gray-300 rounded-md px-3 py-2 focus-within:ring-1 focus-within:ring-indigo-500 focus-within:border-indigo-500">
+                            <div id="tagContainer" class="flex flex-wrap items-center gap-2">
+                                <!-- Tags will be inserted here -->
+                            </div>
+                            <input type="text" id="tagInput" class="flex-1 outline-none text-sm min-w-20" placeholder="Add tags separated by comma">
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">Add up to 10 tags to help viewers find your video</p>
+                    </div>
+
+                    <!-- Visibility -->
+                    <div class="mb-6">
+                        <span class="block text-sm font-medium text-gray-700 mb-2">Visibility</span>
+                        <div class="mt-2 space-y-4">
+                            <div class="flex items-center">
+                                <input id="visibility-public" name="visibility" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="public" checked>
+                                <label for="visibility-public" class="ml-3 block text-sm font-medium text-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-globe text-gray-500 mr-2"></i>
+                                        Public
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Anyone can view your video</p>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="visibility-unlisted" name="visibility" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="unlisted">
+                                <label for="visibility-unlisted" class="ml-3 block text-sm font-medium text-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-link text-gray-500 mr-2"></i>
+                                        Unlisted
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Anyone with the link can view your video</p>
+                                </label>
+                            </div>
+                            <div class="flex items-center">
+                                <input id="visibility-private" name="visibility" type="radio" class="focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300" value="private">
+                                <label for="visibility-private" class="ml-3 block text-sm font-medium text-gray-700">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-lock text-gray-500 mr-2"></i>
+                                        Private
+                                    </div>
+                                    <p class="text-xs text-gray-500 mt-1">Only you can view your video</p>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save Buttons -->
+                    <div class="mt-8 border-t border-gray-200 pt-5">
+                        <div class="flex justify-end">
+                            <button type="button" class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Save as Draft
+                            </button>
+                            <button type="submit" class="ml-3 inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Publish Video
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileUpload = document.getElementById('file-upload');
+            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+            const filePreview = document.getElementById('filePreview');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const removeFileBtn = document.getElementById('removeFile');
+            const thumbnailUpload = document.getElementById('thumbnail-upload');
+            const thumbnailPlaceholder = document.getElementById('thumbnailPlaceholder');
+            const thumbnailPreview = document.getElementById('thumbnailPreview');
+            const titleInput = document.getElementById('title');
+            const titleCounter = document.getElementById('titleCounter');
+            const descriptionInput = document.getElementById('description');
+            const descCounter = document.getElementById('descCounter');
+            const tagInput = document.getElementById('tagInput');
+            const tagContainer = document.getElementById('tagContainer');
+            const uploadForm = document.getElementById('uploadForm');
+            
+            // Handle file upload
+            fileUpload.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    
+                    // Check if file is video
+                    if (!file.type.startsWith('video/')) {
+                        alert('Please select a video file.');
+                        return;
+                    }
+                    
+                    // Display file info
+                    uploadPlaceholder.classList.add('hidden');
+                    filePreview.classList.remove('hidden');
+                    
+                    fileName.textContent = file.name;
+                    
+                    // Format file size
+                    const size = file.size;
+                    let formattedSize;
+                    if (size < 1024 * 1024) {
+                        formattedSize = (size / 1024).toFixed(2) + ' KB';
+                    } else if (size < 1024 * 1024 * 1024) {
+                        formattedSize = (size / (1024 * 1024)).toFixed(2) + ' MB';
+                    } else {
+                        formattedSize = (size / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+                    }
+                    
+                    fileSize.textContent = formattedSize;
+                    
+                    // Simulate upload progress
+                    let progress = 0;
+                    const interval = setInterval(() => {
+                        progress += Math.random() * 10;
+                        if (progress >= 100) {
+                            progress = 100;
+                            clearInterval(interval);
+                        }
+                        uploadProgress.style.width = progress + '%';
+                    }, 300);
+                }
+            });
+            
+            // Remove file
+            removeFileBtn.addEventListener('click', function() {
+                fileUpload.value = '';
+                uploadPlaceholder.classList.remove('hidden');
+                filePreview.classList.add('hidden');
+                uploadProgress.style.width = '0%';
+            });
+            
+            // Handle thumbnail upload
+            thumbnailUpload.addEventListener('change', function(e) {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    
+                    // Check if file is image
+                    if (!file.type.startsWith('image/')) {
+                        alert('Please select an image file.');
+                        return;
+                    }
+                    
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        thumbnailPlaceholder.classList.add('hidden');
+                        thumbnailPreview.src = e.target.result;
+                        thumbnailPreview.classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Character counters
+            titleInput.addEventListener('input', function() {
+                titleCounter.textContent = this.value.length;
+            });
+            
+            descriptionInput.addEventListener('input', function() {
+                descCounter.textContent = this.value.length;
+            });
+            
+            // Tags management
+            const tags = new Set();
+            
+            function renderTags() {
+                tagContainer.innerHTML = '';
+                tags.forEach(tag => {
+                    const tagElement = document.createElement('div');
+                    tagElement.className = 'flex items-center bg-gray-100 rounded-full px-3 py-1 text-sm';
+                    tagElement.innerHTML = `
+                        <span>${tag}</span>
+                        <button type="button" class="ml-1 text-gray-500 hover:text-gray-700" data-tag="${tag}">
+                            <i class="fas fa-times-circle"></i>
+                        </button>
+                    `;
+                    tagContainer.appendChild(tagElement);
+                    
+                    // Add event listener to remove button
+                    tagElement.querySelector('button').addEventListener('click', function() {
+                        const tagToRemove = this.getAttribute('data-tag');
+                        tags.delete(tagToRemove);
+                        renderTags();
+                    });
+                });
+            }
+            
+            tagInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' || e.key === ',') {
+                    e.preventDefault();
+                    const newTags = this.value.split(',').map(tag => tag.trim()).filter(tag => tag);
+                    
+                    for (const newTag of newTags) {
+                        if (tags.size < 10) {
+                            tags.add(newTag);
+                        } else {
+                            alert('You can only add up to 10 tags.');
+                            break;
+                        }
+                    }
+                    
+                    renderTags();
+                    this.value = '';
+                }
+            });
+            
+            // Form submission
+            uploadForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validation
+                if (!fileUpload.files || fileUpload.files.length === 0) {
+                    alert('Please select a video file to upload.');
+                    return;
+                }
+                
+                if (!titleInput.value.trim()) {
+                    alert('Please enter a title for your video.');
+                    titleInput.focus();
+                    return;
+                }
+                
+                if (!document.getElementById('category').value) {
+                    alert('Please select a category for your video.');
+                    document.getElementById('category').focus();
+                    return;
+                }
+                
+                // Simulate form submission
+                const submitButton = this.querySelector('button[type="submit"]');
+                const originalText = submitButton.innerHTML;
+                
+                submitButton.innerHTML = `
+                    <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    Publishing...
+                `;
+                submitButton.disabled = true;
+                
+                // Simulate API call delay
+                setTimeout(() => {
+                    alert('Video uploaded successfully!');
+                    submitButton.innerHTML = originalText;
+                    submitButton.disabled = false;
+                    
+                    // Redirect to home page
+                    window.location.href = 'index.html';
+                }, 2000);
+            });
+            
+            // Drag and drop functionality
+            const dropArea = document.querySelector('.border-dashed');
+            
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropArea.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropArea.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropArea.classList.add('border-indigo-300', 'bg-indigo-50');
+            }
+            
+            function unhighlight() {
+                dropArea.classList.remove('border-indigo-300', 'bg-indigo-50');
+            }
+            
+            dropArea.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files && files[0]) {
+                    fileUpload.files = files;
+                    
+                    // Trigger change event
+                    const event = new Event('change');
+                    fileUpload.dispatchEvent(event);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
